@@ -1,0 +1,25 @@
+{% embed 'base.html.twig' with {'nav_section': 3} %}
+
+    {% block surcore_header_title %}News{% endblock %}
+
+    {% block surcore_header_summary %}{% endblock %}
+
+    {% block primary %}{% endblock %}
+
+    {% block module_base %}
+    <div class="module_base">
+        {% if breaking_news %}
+            <a href="{{ breaking_news.0.path }}" class="feed_breaking">
+                <i class="feed_breaking_picto">⚡</i>
+                <div class="feed_breaking_summary">BREAKING NEWS: {{ breaking_news.0.post_title }}</div>
+            </a>
+        {% endif %}
+
+        {% include 'helpers/feed.html.twig' with {'col_layout': 2, 'with_large': true, 'with_images': false, 'with_summary': true, 'with_surtitle': false, 'with_author': false, 'with_date': true, 'feed_title': '', 'feed_cta': '', 'feed_cta_path': ''} %}
+
+        {% include 'helpers/pagination.html.twig' %}
+
+    </div> <!-- End .module_base -->
+    {% endblock module_base %}
+
+{% endembed %}

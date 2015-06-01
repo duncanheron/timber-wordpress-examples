@@ -1,0 +1,72 @@
+{% if col_layout == 1 %}
+    {% set layout_type = 'single' %}
+{% elseif col_layout == 2 %}
+    {% set layout_type = 'double' %}
+{% endif %}
+
+{% if with_large %}
+    {% set size_type = 'large' %}
+{% else %}
+    {% set size_type = 'small' %}
+{% endif %}
+
+{% if with_images %}
+    {% set image_layout = 'with_images' %}
+{% else %}
+    {% set image_layout = 'no_images' %}
+{% endif %}
+
+<div class="feed_base">
+
+    {% if feed_title %}
+        <h2 class="feed_base_title{{ ' ' ~ size_type }}{{ ' ' ~ layout_type }}">{{ feed_title }}</h2>
+    {% endif %}
+
+    <ul class="feed{{ ' ' ~ layout_type }}">
+    {% for feed in feeds %}
+        <li class="feed_block block{{ loop.index }}{{ ' ' ~ image_layout }}{{ ' ' ~ layout_type }}{% if loop.first %} first{% endif %}{% if loop.last %} last{% endif %}">
+
+            {% if with_images and feed.thumb %}
+                <a href="{{ feed.path }}" class="feed_thumb_base{{ ' ' ~ layout_type }}">
+                    <div class="feed_thumb_overlay"><span class="feed_thumb_overlay_picto"></span></div>
+                    <img src="/assets/images/{{ feed.thumb }}" alt="{{ feed.title }}" class="feed_thumb{{ ' ' ~ layout_type }}" />
+                </a>
+            {% endif %}
+
+            {% if with_surtitle and feed.tags %}
+                <h4 class="feed_surtitle{{ ' ' ~ size_type }}">
+                    {% for tag in feed.tags %}
+                        <a href="{{ tag.path }}" class="feed_surtitle_wl{{ ' ' ~ size_type }}">{{ tag.title }}</a>
+                    {% endfor %}
+                </h4>
+            {% endif %}
+
+            <h3 class="feed_title{{ ' ' ~ size_type }}"><a href="{{ feed.path }}" class="feed_title_wl{{ ' ' ~ size_type }}">{{ feed.title|raw }}</a></h3>
+
+            {% if feed.author or feed.date and feed.feature == false %}
+                <p class="feed_meta{{ ' ' ~ size_type }}">{% if with_author and feed.author %}By <b>{{ feed.author }}</b>{% endif %}{% if with_author and feed.author and with_date %}{{ ',' ~ ' ' }}{% endif %}{% if with_date and feed.date %}<b>{{ feed.date|date("j M Y") }}</b>{% endif %}</p>
+            {% endif %}
+
+            {% if feed.date and feed.feature %}
+                <p class="feed_meta{{ ' ' ~ size_type }} with_feature"><b>Feature</b></p>
+            {% endif %}
+
+            {% if with_summary and feed.post_excerpt %}
+                <p class="feed_summary{{ ' ' ~ size_type }}">{{ feed.post_excerpt }}</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% if feed_cta %}
+    <a href="#" class="feed_base_more{{ ' ' ~ image_layout }}{{ ' ' ~ size_type }}{{ ' ' ~ layout_type }}">
+        {{ feed_cta }}
+    </a>
+    {% endif %}
+
+</div> <!-- End .feed_base -->
+
+{#
+ # Include like so: {% include 'helpers/feed.html.twig' with {'col_layout': 1, 'with_large': true, 'with_images': false, 'with_summary': true, 'with_surtitle': true, 'with_date': false, 'feed_title': 'In the news', 'feed_cta': 'Read more on Medium'} %}
+ # Can be col_layout == 1 or 2
+ #}

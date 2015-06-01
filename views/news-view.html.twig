@@ -1,0 +1,19 @@
+{% embed 'base.html.twig' with {'nav_section': 3} %}
+
+    {% block surcore_header_title %}{{ post.title }}{% endblock %}
+
+    {% block surcore_header_summary_content %}Published on <time itemprop="datePublished" datetime="{{ post.date|date('c') }}">{{ post.date|date('j M Y')}}</time>{% endblock %}
+
+    {% block primary_content %}
+        {{ post.content }}
+    {% endblock primary_content %}
+
+    {% block module_base %}
+    <div class="module_base">
+
+        {% include 'helpers/related.html.twig' with {'title': 'More news', 'with_images': false} %}
+
+    </div> <!-- End .module_base -->
+    {% endblock module_base %}
+
+{% endembed %}
